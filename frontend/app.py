@@ -3,6 +3,7 @@ import pickle
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
+import plotly.graph_objects as go  # For the dial meter
 
 # Load the model
 with open(r'C:\Users\sahus\HyperFlux\xgboost_model.pkl', 'rb') as file:
@@ -53,33 +54,70 @@ user_input = pd.DataFrame([[feature_1, feature_2, feature_3, feature_4]], column
 # Display input data in the main page
 st.write("### Selected Input Values:")
 st.dataframe(user_input)
-print(user_input)
 
 # Scale the input data
-# array_2d = user_input.to_numpy()
-# st.write('2D NumPy Array:')
-# st.write(array_2d)
-# user_input_reshape = user_input.reshape(-1,1)
 user_input_reshape = user_input.to_numpy().reshape(-1, 1)
-
 user_input_scaled = scaler.fit_transform(user_input_reshape)
-print(user_input_scaled)
 single_row_array = user_input_scaled.reshape(1, -1)
-print(single_row_array)
-
 
 # Button to make a prediction
 if st.button("Predict"):
     # Predict the cluster
     prediction = model.predict(single_row_array)
-    
+    probability = model.predict_proba(single_row_array)
+    stress = round(probability[0][1] * 100, 2)  # Probability of stress level
+
     # Display the result with a success message
     st.markdown("<h2 style='color: #4CAF50;'>Prediction Result:</h2>", unsafe_allow_html=True)
-    st.write(f"#### The predicted cluster is: **{int(prediction[0])}**")
-    st.success("Prediction successful! 🎉")
+
+    # Create a dial meter for the stress level using Plotly
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number",
+        value=stress,
+        title={'text': "Stress Level (%)"},
+        gauge={
+            'axis': {'range': [0, 100]},
+        'steps': [
+            {'range': [0, 25], 'color': "lightgray"},
+            {'range': [25, 50], 'color': "gray"},
+            {'range': [50, 75], 'color': "red"},
+            {'range': [75, 100], 'color': "blue"}
+        ],
+
+        'threshold': {
+        'line': {'color': "red", 'width': 4},
+        'thickness': 0.75,
+        'value': 490}
+        }
+    ))
+
+    # Display the stress meter
+    st.title('Stress-O-meter')
+    st.plotly_chart(fig)
+
+#st.write(f"#### The predicted cluster is: **{int(prediction[0])}**")
+    #st.write(f"#### The probability of the prediction: **{stress}**%")
+    if stress:
+        try:
+            if stress > 0.0 and stress <= 25.0:
+                st.write(f"** You have {stress} % stress predicted. **")
+                st.write("Stress level is low. Try to maintain your stress level for good health")
+            elif stress > 25.0 and stress <= 50.0:
+                st.write(f"You have {stress} % stress predicted.")
+                st.write("Stress level is mild.Try to doing exercises to reduce your stress level for good health.")
+            elif stress > 50.0 and stress <= 75.0:
+                st.write(f"You have {stress} % stress predicted.")
+                st.write("Stress level is moderate. Consider seeking help from a healthcare professional.")
+            elif stress > 75.0 and stress <= 100.0:
+                st.write(f"**You have {stress} % stress predicted.**")
+                st.write("**Stress level is high. Please consult with a healthcare professional Immediately.**")
+        except ValueError:
+            st.error("Please enter a valid number.")
+    else:
+        st.write("Please enter a number above.")
+
+    #st.success("Prediction successful! 🎉")
 
 # Footer with contact info
 st.markdown("<hr>", unsafe_allow_html=True)
 st.write("Made with ❤️ by [Your Name](https://github.com/YourProfile)")
-
-# Run the app using: streamlit run <filename>.py
