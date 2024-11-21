@@ -1,12 +1,12 @@
 import numpy as np
 from flask import Flask, request, jsonify, render_template
 import pickle
-# import predictStress
+import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
 
 app = Flask(__name__)
-model = pickle.load(open('new_logistic_regression_model.pkl', 'rb'))
+model = pickle.load(open(r'C:\Users\sahus\Stress-Prediction\frontend\xgboost_model.pkl', 'rb'))
 scaler = StandardScaler()
 
 @app.route('/')
@@ -19,14 +19,18 @@ def tryit():
 
 @app.route('/predict',methods=['POST'])
 def predict():
-    int_features = [[float(x) for x in request.form.values()]]
-    print(int_features)
-    # final_features = [np.array(int_features)]
-    # user_input_reshape = int_features.to_numpy().reshape(-1, 1)
-    user_input_scaled = scaler.fit_transform(int_features)
-    print(user_input_scaled)
+    #int_features = [[float(x) for x in request.form.values()]]
+    EDA = request.form.get("EDA")
+    TEMP = request.form.get("TEMP")
+    BVP = request.form.get("BVP")
+    HR = request.form.get("HR")
+
+    user_input = pd.DataFrame([[EDA, TEMP, BVP, HR]], columns=['EDA', 'TEMP', 'BVP','HR'])
+ 
+# Scale the input data
+    user_input_reshape = user_input.to_numpy().reshape(-1, 1)
+    user_input_scaled = scaler.fit_transform(user_input_reshape)
     single_row_array = user_input_scaled.reshape(1, -1)
-    print(single_row_array)
 
     probability = model.predict_proba(single_row_array)
     stress = round(probability[0][1] * 100, 2)  # Probability of stress level
