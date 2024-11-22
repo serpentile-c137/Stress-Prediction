@@ -47,7 +47,6 @@
     </nav>
 
     <div class="container">
-      <!-- Result Container -->
       <div class="result-container">
         <h2>Stress Predcition Result</h2>
         <p>You have {{prediction_text}} % stress predicted.</p>
@@ -57,10 +56,7 @@
       <div class="gauge">
         <div class="gauge__body">
           <div class="gauge__fill"></div>
-          <div class="gauge__cover">
-            <!-- Add text here -->
-            <!-- <span>75%</span> -->
-          </div>
+          <div class="gauge__cover"></div>
         </div>
       </div>
 
@@ -92,21 +88,25 @@
           value * 100
         )}%`;
       }
-      setTimeout(2000);
+      // setTimeout(2000);
       console.log("stress value:");
       console.log(stressValue);
-      setGaugeValue(gaugeElement, stressValue);
-
-      if (stressValue >= 0 && stressValue < 25) {
+      // setGaugeValue(gaugeElement, stressValue);
+      setTimeout(() => {
+        // console.log("stress value:", stressValue);
+        setGaugeValue(gaugeElement, stressValue);
+      }, 800);
+      console.log(stressValue);
+      if (stressValue >= 0 && stressValue < 0.25) {
         document.getElementById("suggestion").innerHTML =
           "<h3>Stress level is low. Try to maintain your stress level for good health.</h3>";
-      } else if (stressValue >= 24 && stressValue < 50) {
+      } else if (stressValue >= 0.25 && stressValue < 0.5) {
         document.getElementById("suggestion").innerHTML =
           "<h3>Stress level is mild.Try to doing exercises to reduce your stress level for good health.</h3>";
-      } else if (stressValue >= 50 && stressValue < 75) {
+      } else if (stressValue >= 0.5 && stressValue < 0.75) {
         document.getElementById("suggestion").innerHTML =
           "<h3>Stress level is moderate. Consider seeking help from a healthcare professional.</h3>";
-      } else if (stressValue >= 75 && stressValue <= 100) {
+      } else if (stressValue >= 0.75 && stressValue <= 1) {
         document.getElementById("suggestion").innerHTML =
           "<h3>Stress level is high. Please consult with a healthcare professional Immediately.</h3>";
       }
