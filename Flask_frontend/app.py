@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 app = Flask(__name__)
-model = pickle.load(open(r'C:\Users\sahus\Stress-Prediction\frontend\xgboost_model.pkl', 'rb'))
+model = pickle.load(open(r'new_logistic_regression_model.pkl', 'rb'))
 scaler = StandardScaler()
 
 @app.route('/')
@@ -33,11 +33,13 @@ def predict():
     single_row_array = user_input_scaled.reshape(1, -1)
 
     probability = model.predict_proba(single_row_array)
-    stress = round(probability[0][1] * 100, 2)  # Probability of stress level
+    stress = round(probability[0][1], 4)
+    # stress = round(probability[0][1] * 100, 2)  # Probability of stress level
 
     print('this is the output', stress)
 
-    return render_template('predict.html', prediction_text='stress prboablity is : {}'.format(stress))
+    # return render_template('predict.html', prediction_text='stress prboablity is : {}'.format(stress))
+    return render_template('predict.html', prediction_text='{}'.format(stress))
 
 if __name__ == "__main__":
     app.run(debug=True)
