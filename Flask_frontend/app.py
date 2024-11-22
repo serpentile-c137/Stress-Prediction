@@ -17,6 +17,10 @@ def home():
 def tryit():
     return render_template('tryit.html')
 
+@app.route('/info')
+def info():
+    return render_template('info.html')
+
 @app.route('/predict',methods=['POST'])
 def predict():
     #int_features = [[float(x) for x in request.form.values()]]
@@ -33,8 +37,8 @@ def predict():
     single_row_array = user_input_scaled.reshape(1, -1)
 
     probability = model.predict_proba(single_row_array)
-    stress = round(probability[0][1], 4)
-    # stress = round(probability[0][1] * 100, 2)  # Probability of stress level
+    # stress = round(probability[0][1], 4)
+    stress = round(probability[0][1] * 100, 2)  # Probability of stress level
 
     print('this is the output', stress)
 
