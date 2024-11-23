@@ -17,6 +17,15 @@ body {
   text-align: center;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
   /* letter-spacing:1.2px; */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background-image: url("../images/img.jpg");
+  background-size: cover; /* Ensures the image covers the whole screen */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  margin: 0; /* Remove default margin */
 }
 
 input {
@@ -26,6 +35,13 @@ input {
   border-radius: 4px;
   margin-bottom: 10px !important;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.text-part {
+  background-color: rgba(255, 255, 255, 0.7); /* Semi-opaque white background */
+  padding: 20px;
+  border-radius: 10px; /* Optional: Adds rounded corners */
+  color: darkslategray;
 }
 
 .input-form {
