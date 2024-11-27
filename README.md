@@ -32,7 +32,7 @@ The main goal of this project is to develop a reliable and efficient machine lea
 Clone the repository
 
 ```bash
-https://github.com/GauravSahu13/StressPredict_AIML
+https://github.com/serpentile-c137/Stress-Prediction
 ```
 
 ### STEP 01- install the requirements
