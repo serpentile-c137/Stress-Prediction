@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 app = Flask(__name__)
-model = pickle.load(open(r'new_logistic_regression_model.pkl', 'rb'))
+model = pickle.load(open(r'C:\Users\sahus\Stress-Prediction\Flask_frontend\model.pkl', 'rb'))
 scaler = StandardScaler()
 
 @app.route('/')
