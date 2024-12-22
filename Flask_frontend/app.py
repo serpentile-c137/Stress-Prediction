@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 app = Flask(__name__)
-model = pickle.load(open(r'C:\Users\sahus\Stress-Prediction\Flask_frontend\model.pkl', 'rb'))
+model = pickle.load(open(r'model.pkl', 'rb'))
 scaler = StandardScaler()
 
 @app.route('/')
@@ -43,7 +43,8 @@ def predict():
     print('this is the output', stress)
 
     # return render_template('predict.html', prediction_text='stress prboablity is : {}'.format(stress))
-    return render_template('predict.html', prediction_text='{}'.format(stress))
+    print(round(stress,2))
+    return render_template('predict.html', predicted_stress='{}'.format(stress))
 
 if __name__ == "__main__":
     app.run(debug=True)
